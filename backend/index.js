@@ -23,6 +23,10 @@ app.use(cors({
   credentials: true
 }));
 
+app.get('/', (req, res) => {
+  res.send('backend server running');
+});
+
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/eventick';
 mongoose.connect(MONGODB_URI)
   .then(() => {
@@ -80,5 +84,5 @@ app.use('/api', strictRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is running properly on port ${PORT} with Role-based Auth`);
+  console.log(`Server is running properly on: http://localhost:${PORT} with Role-based Auth`);
 });
