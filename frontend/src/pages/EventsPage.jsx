@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useAuth } from "../context/AuthContext";
 import { bookTicket } from "../api/bookings";
-import { likeEvent, commentOnEvent } from "../api/events";
+import { likeEvent, commentOnEvent, getEvents } from "../api/events";
 import { FaTimes, FaSearch, FaCalendarAlt } from "react-icons/fa";
 import EventCard from "./components/EventCard";
 import EventModal from "./components/EventModel";
@@ -38,9 +38,7 @@ const EventsPage = () => {
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || "/api/v1";
-      const res  = await fetch(`${baseUrl}/events`);
-      const data = await res.json();
+      const data = await getEvents();
       setEvents(Array.isArray(data) ? data : []);
     } catch {
       setGlobalMsg({ type: "error", text: "Failed to load events." });
