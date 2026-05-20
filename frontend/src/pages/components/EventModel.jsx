@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaMapMarkerAlt, FaTimes, FaTicketAlt, FaStar, FaRegStar, FaImages, FaExternalLinkAlt, FaTrashAlt, FaImage, FaLayerGroup, FaPaperPlane, FaUser } from "react-icons/fa";
-import { cancelTicket } from "../../api/bookings";
+import { cancelTicket, getMyTickets } from "../../api/bookings";
 import { addVenueReview, getVenueById } from "../../api/venues";
 
 const Alert = ({ type, text, onClose }) => (
@@ -34,10 +34,7 @@ const EventModal = ({ event, myId, isAuthenticated, userRole, onClose, onReviewS
       getVenueById(event.venueId._id).then(setVenue).catch(() => {});
     }
     if (isAuthenticated && userRole === "USER") {
-      const token = JSON.parse(localStorage.getItem("eventick_user"))?.token;
-      const baseUrl = import.meta.env.VITE_API_URL || "/api/v1";
-      fetch(`${baseUrl}/bookings/my-tickets`, { headers: { Authorization: `Bearer ${token}` } })
-        .then(r => r.json())
+      getMyTickets()
         .then(tickets => {
           const active = tickets.filter(t => t.eventId?._id === event._id && !t.cancelled);
           setMyTickets(active);
