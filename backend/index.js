@@ -18,7 +18,10 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || '*',
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    return callback(null, origin);
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true
 }));
@@ -35,7 +38,7 @@ mongoose.connect(MONGODB_URI)
   })
   .catch(err => {
     console.error('MongoDB connection failed:', err.message);
-    process.exit(1); // Exit if DB connection fails
+    process.exit(1); 
   });
 
 app.use('/api/v1/auth', authRoutes);
