@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://even-tick-baclkend.onrender.com/api/$1"
+      "destination": "https://even-tick-backend.onrender.com/api/$1"
     },
     {
       "source": "/(.*)",
